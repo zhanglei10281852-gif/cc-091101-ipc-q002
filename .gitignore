@@ -1,0 +1,120 @@
+# =========================
+# C++ / CMake
+# =========================
+# Build directories
+backend/build/
+build/
+cmake-build-*/
+
+# Compiled Object files
+*.o
+*.obj
+*.lo
+*.slo
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.a
+*.lib
+*.la
+*.lai
+
+# Executables
+*.exe
+*.out
+*.app
+ipc_demo
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+compile_commands.json
+install_manifest.txt
+CTestTestfile.cmake
+_deps/
+
+# =========================
+# IDE / Editor
+# =========================
+# VS Code
+.vscode/
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# =========================
+# OS Generated
+# =========================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# =========================
+# Docker
+# =========================
+# Docker volumes (if any local)
+docker-data/
+
+# =========================
+# Temporary files
+# =========================
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.tmp
+*.temp
+*.log
+*.bak
+*.backup
+
+# =========================
+# IPC Demo specific
+# =========================
+# Named pipes and sockets created during demo
+/tmp/ipc_demo_*

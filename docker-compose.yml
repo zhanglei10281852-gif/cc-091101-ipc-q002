@@ -1,0 +1,31 @@
+services:
+  # 运行演示
+  ipc-demo:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ipc-demo
+    privileged: true
+    volumes:
+      - /tmp:/tmp
+    ipc: host
+    tty: true
+    stdin_open: true
+    command: demo
+    restart: "no"
+
+  # 运行测试
+  ipc-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ipc-test
+    privileged: true
+    volumes:
+      - /tmp:/tmp
+    ipc: host
+    tty: true
+    command: test
+    restart: "no"
+    profiles:
+      - test
