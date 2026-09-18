@@ -31,3 +31,17 @@ target_link_libraries(ipc_tests PRIVATE Threads::Threads rt)
 
 # 添加测试
 add_test(NAME ipc_tests COMMAND ipc_tests)
+
+# Linux 集成测试：真正启动独立服务端与多个客户端，需要 bash 与 python3
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    find_program(BASH_PROGRAM bash)
+    find_program(PYTHON3_PROGRAM python3)
+    if(BASH_PROGRAM AND PYTHON3_PROGRAM)
+        add_test(
+            NAME uxsock_integration
+            COMMAND ${BASH_PROGRAM}
+                    ${CMAKE_CURRENT_SOURCE_DIR}/integration/uxsock_integration.sh
+                    $<TARGET_FILE:ipc_agent>
+        )
+    endif()
+endif()

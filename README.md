@@ -31,14 +31,22 @@ make
 
 # 运行测试
 ./tests/ipc_tests
+
+# 运行 Unix Socket serve/request 集成测试（独立服务端 + 多个客户端）
+ctest --output-on-failure      # 或:
+bash ../tests/integration/uxsock_integration.sh ./ipc_agent
 ```
 
 ## 2. 服务说明
 
-| 服务名   | 命令 | 说明              |
-| -------- | ---- | ----------------- |
-| ipc-demo | demo | 运行所有 IPC 演示 |
-| ipc-test | test | 运行所有测试用例  |
+| 服务名         | 命令        | 说明                                   |
+| -------------- | ----------- | -------------------------------------- |
+| ipc-demo       | demo        | 运行所有 IPC 演示                      |
+| ipc-test       | test        | 运行所有单元测试用例                   |
+| ipc-integration| integration | 运行 Unix Socket serve/request 集成测试 |
+
+除交互演示外，后端还构建了独立的 `ipc_agent`（`serve` / `request` 两种工作模式的
+多客户端 Unix Domain Socket 本地代理），详见 [backend/README.md](backend/README.md)。
 
 ## 3. 测试账号
 
@@ -219,15 +227,18 @@ docker system prune -f
     ├── README.md           # 后端说明
     ├── src/
     │   ├── main.cpp        # 主程序入口
+    │   ├── main_agent.cpp  # ipc_agent（serve/request 模式）入口
     │   ├── include/
-    │   │   └── ipc_demo.h  # 头文件
+    │   │   ├── ipc_demo.h            # 头文件
+    │   │   └── unix_socket_agent.h   # 长度前缀帧协议与 Socket 辅助
     │   └── ipc/
     │       ├── pipe_demo.cpp           # 管道演示
     │       ├── named_pipe_demo.cpp     # 命名管道演示
     │       ├── shared_memory_demo.cpp  # 共享内存演示
     │       ├── message_queue_demo.cpp  # 消息队列演示
     │       ├── signal_demo.cpp         # 信号演示
-    │       └── socket_demo.cpp         # Socket 演示
+    │       ├── socket_demo.cpp         # Socket 演示
+    │       └── unix_socket_agent.cpp   # 多客户端服务端/客户端实现
     └── tests/
         ├── CMakeLists.txt          # 测试构建配置
         ├── test_framework.h        # 测试框架
@@ -237,7 +248,9 @@ docker system prune -f
         ├── test_shared_memory.cpp  # 共享内存测试
         ├── test_message_queue.cpp  # 消息队列测试
         ├── test_signal.cpp         # 信号测试
-        └── test_socket.cpp         # Socket 测试
+        ├── test_socket.cpp         # Socket 测试
+        └── integration/
+            └── uxsock_integration.sh  # serve/request Linux 集成测试
 ```
 
 ---

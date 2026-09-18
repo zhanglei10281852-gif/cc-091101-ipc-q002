@@ -14,7 +14,7 @@ services:
     command: demo
     restart: "no"
 
-  # 运行测试
+  # 运行单元测试
   ipc-test:
     build:
       context: ./backend
@@ -26,6 +26,21 @@ services:
     ipc: host
     tty: true
     command: test
+    restart: "no"
+    profiles:
+      - test
+
+  # 运行 Unix Domain Socket serve/request 集成测试
+  ipc-integration:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ipc-integration
+    privileged: true
+    volumes:
+      - /tmp:/tmp
+    ipc: host
+    command: integration
     restart: "no"
     profiles:
       - test

@@ -32,6 +32,8 @@ cmake-build-*/
 *.out
 *.app
 ipc_demo
+ipc_agent
+ipc_tests
 
 # CMake generated files
 CMakeCache.txt

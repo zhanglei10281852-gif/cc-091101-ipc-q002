@@ -28,11 +28,20 @@ target_include_directories(ipc_demo PRIVATE ${CMAKE_SOURCE_DIR}/src/include)
 # 链接库
 target_link_libraries(ipc_demo PRIVATE Threads::Threads rt)
 
+# Unix Domain Socket 多客户端代理（serve / request 两种工作模式）
+add_executable(ipc_agent
+    src/main_agent.cpp
+    src/ipc/unix_socket_agent.cpp
+)
+target_include_directories(ipc_agent PRIVATE ${CMAKE_SOURCE_DIR}/src/include)
+target_link_libraries(ipc_agent PRIVATE Threads::Threads)
+
 # 安装
-install(TARGETS ipc_demo DESTINATION bin)
+install(TARGETS ipc_demo ipc_agent DESTINATION bin)
 
 # 添加测试子目录
 option(BUILD_TESTS "Build tests" ON)
 if(BUILD_TESTS)
+    enable_testing()
     add_subdirectory(tests)
 endif()
