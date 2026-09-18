@@ -11,6 +11,16 @@
  */
 
 #include "ipc_demo.h"
+#include "socket_proxy.h"
+
+void print_usage() {
+    std::cout << "用法:" << std::endl;
+    std::cout << "  ipc_demo                 交互式菜单 (含原 Socket 演示)" << std::endl;
+    std::cout << "  ipc_demo --all           运行全部 IPC 演示" << std::endl;
+    std::cout << "  ipc_demo serve [选项]    启动本地代理服务端 (多客户端 Unix Socket)" << std::endl;
+    std::cout << "  ipc_demo request [选项]  启动本地代理客户端" << std::endl;
+    std::cout << "  ipc_demo serve --help / ipc_demo request --help  查看详细选项" << std::endl;
+}
 
 void print_menu() {
     std::cout << "\n\033[35m╔════════════════════════════════════════════╗\033[0m" << std::endl;
@@ -25,6 +35,7 @@ void print_menu() {
     std::cout << "\033[35m║  7. 运行所有演示                           ║\033[0m" << std::endl;
     std::cout << "\033[35m║  0. 退出                                   ║\033[0m" << std::endl;
     std::cout << "\033[35m╚════════════════════════════════════════════╝\033[0m" << std::endl;
+    std::cout << "  本地代理模式: ipc_demo serve | ipc_demo request (--help 查看选项)" << std::endl;
     std::cout << "\n请选择 (0-7): ";
 }
 
@@ -52,12 +63,26 @@ void run_all_demos() {
 }
 
 int main(int argc, char* argv[]) {
-    // 如果有命令行参数 --all，直接运行所有演示
-    if (argc > 1 && std::string(argv[1]) == "--all") {
-        run_all_demos();
-        return 0;
+    if (argc > 1) {
+        std::string cmd = argv[1];
+        // 如果有命令行参数 --all，直接运行所有演示
+        if (cmd == "--all") {
+            run_all_demos();
+            return 0;
+        }
+        // 本地代理工作模式: 可分别启动的独立服务端 / 客户端
+        if (cmd == "serve") {
+            return ipc::socket_serve_main(argc - 2, argv + 2);
+        }
+        if (cmd == "request") {
+            return ipc::socket_request_main(argc - 2, argv + 2);
+        }
+        if (cmd == "--help" || cmd == "-h") {
+            print_usage();
+            return 0;
+        }
     }
-    
+
     int choice;
     
     while (true) {

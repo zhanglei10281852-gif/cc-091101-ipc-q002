@@ -55,6 +55,17 @@ make
 5. **信号 (Signal)** - 异步通知机制
 6. **Socket (Unix Domain Socket)** - 本地套接字通信
 
+此外，`ipc_demo` 还提供可分别启动的 **本地代理工作模式**（`serve` / `request`）：
+多客户端并发、固定大端序长度前缀 + request_id 帧协议、拆包/粘包/短写处理、
+帧长上限与空闲超时控制、失效 Socket 清理、0600 权限以及 SIGTERM 优雅退出，
+详见 [backend/README.md](backend/README.md)。
+
+```bash
+./ipc_demo serve --path /tmp/ipc_proxy.sock &   # 启动服务端
+./ipc_demo request --path /tmp/ipc_proxy.sock --count 5
+kill -TERM $!                                    # 优雅退出
+```
+
 ---
 
 ## Docker 详细使用指南

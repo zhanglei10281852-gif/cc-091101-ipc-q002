@@ -15,19 +15,24 @@ set(TEST_SOURCES
     test_message_queue.cpp
     test_signal.cpp
     test_socket.cpp
+    test_socket_proxy.cpp
 )
 
 # 测试可执行文件
 add_executable(ipc_tests ${TEST_SOURCES})
 
 # 包含目录
-target_include_directories(ipc_tests PRIVATE 
+target_include_directories(ipc_tests PRIVATE
     ${CMAKE_SOURCE_DIR}/src/include
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 # 链接库
 target_link_libraries(ipc_tests PRIVATE Threads::Threads rt)
+
+# 集成测试需要启动真正的 ipc_demo 服务端/客户端进程
+add_dependencies(ipc_tests ipc_demo)
+target_compile_definitions(ipc_tests PRIVATE IPC_DEMO_BIN="$<TARGET_FILE:ipc_demo>")
 
 # 添加测试
 add_test(NAME ipc_tests COMMAND ipc_tests)
